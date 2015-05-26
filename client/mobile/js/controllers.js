@@ -105,7 +105,9 @@ angular.module('starter.controllers', [])
         })
         .catch();
     }
-    getList();
+    $scope.$on('$ionicView.beforeEnter', function() {
+      getList();
+    });
 
   })
   .controller('SearchCtrl', function ($scope, $stateParams) {
@@ -114,10 +116,10 @@ angular.module('starter.controllers', [])
   .controller('ManagerCtrl', function ($scope) {
 
   })
-  .controller('TemplistCtrl', function ($scope, $http, Template) {
+  .controller('TemplistCtrl', function ($scope, $http, Template,$state) {
     $scope.templates = [];
     $scope.edit = function (template) {
-      window.location.href = "#/tab/tempedit/"+template._id;
+      $state.go("tab.tempedit",{id:template._id})
     }
     $scope.delete = function (template) {
       $http.delete("/api/templates/" + template._id).
@@ -126,7 +128,7 @@ angular.module('starter.controllers', [])
         })
     }
     $scope.add = function () {
-      window.location.href = "#/tab/tempadd";
+      $state.go("tab.tempAdd");
     }
     var getList = function () {
       Template.getByUserId()
@@ -135,10 +137,12 @@ angular.module('starter.controllers', [])
         })
         .catch();
     }
-    getList();
+    $scope.$on('$ionicView.beforeEnter', function() {
+      getList();
+    });
   }
 )
-  .controller('TempeditCtrl', function ($scope,Template,$stateParams) {
+  .controller('TempeditCtrl', function ($scope,Template,$stateParams,$state) {
     $scope.template={};
     var getTemplate=function(id){
       Template.getById(id)
@@ -159,7 +163,7 @@ angular.module('starter.controllers', [])
       if (form.$valid) {
         Template.updateTemplate($scope.template)
           .then(function(data){
-            window.location.href="#/tab/templist";
+            $state.go("tab.templist");
           })
           .catch();
       }
@@ -167,7 +171,7 @@ angular.module('starter.controllers', [])
     var id=$stateParams.id;
     getTemplate(id);
   })
-  .controller('TempaddCtrl', function ($scope,Template) {
+  .controller('TempaddCtrl', function ($scope,Template,$state) {
     $scope.template = {
       content: "快递编号#编号#",
       isIncludeNum: true
@@ -184,7 +188,7 @@ angular.module('starter.controllers', [])
       if (form.$valid) {
         Template.addTemplate($scope.template)
           .then(function(data){
-            window.location.href="#/tab/templist";
+            $state.go("tab.templist");
           })
           .catch();
       }

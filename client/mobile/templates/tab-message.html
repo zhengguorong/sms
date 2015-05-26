@@ -1,6 +1,6 @@
 <ion-view view-title="短信">
   <ion-content>
-  <div class="list list-inset addHistory" >
+  <div class="list list-inset addHistory" ngInit="getList()">
   <label class="item item-input">
     <textarea rows="5" style="line-height:25px;" readonly="readonly">{{selectedTemplate.content}}</textarea>
   </label>
