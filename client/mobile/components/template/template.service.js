@@ -31,7 +31,7 @@ angular.module('starter')
           }.bind(this));
         return deferred.promise;
       },
-      updateTemplate:function(template,callbcak){
+      updateTemplate:function(template,callback){
         var cb = callback || angular.noop;
         var deferred = $q.defer();
         $http.put('/api/templates/'+template._id,template)

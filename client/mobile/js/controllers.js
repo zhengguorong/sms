@@ -147,6 +147,13 @@ angular.module('starter.controllers', [])
         })
         .catch();
     }
+    $scope.updateChecked = function (value) {
+      if (!value) {
+        $scope.template.content = $scope.template.content.replace("快递编号#编号#", "");
+      } else {
+        $scope.template.content = "快递编号#编号#" + ($scope.template.content || "");
+      }
+    }
     $scope.updateTempplate = function (form) {
       $scope.submitted = true;
       if (form.$valid) {
