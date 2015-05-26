@@ -1,0 +1,35 @@
+<ion-view view-title="搜索">
+<ion-content>
+	<div class="list list-inset search">
+		<label class="item item-input">
+			<i class="icon ion-search placeholder-icon"></i>
+			<input type="text" placeholder="输入手机号码" style="width: 50%">
+		</label>
+		<button class="button button-positive">
+			搜索
+		</button>
+	</div>
+	<div class="filter">
+		<select class="state">
+			<option>已提交</option>
+			<option selected>已发送</option>
+			<option>发送失败</option>
+		</select>
+		<select class="date">
+			<option>今天</option>
+			<option selected>三天</option>
+			<option>一星期</option>
+			<option>一个月</option>
+		</select>
+	</div>
+
+	<div class="list list-inset addHistory">
+		<div class="item">
+			<span class="num">{{$index+1}}</span>
+		<span class="mobilePhone" style="color: #000">23432442343</span>
+		<span class="address">已发送</span>
+	</div>
+	</div>
+
+</ion-content>
+</ion-view>

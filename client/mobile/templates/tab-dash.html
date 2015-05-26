@@ -1,0 +1,27 @@
+<ion-view view-title="发送号码">
+<ion-content class="padding">
+<div class="address">
+    <div><select ng-options="frame  for frame in frames" ng-model="item.selectFrame"></select></div>
+    <div><input type="text" ng-model="item.lattice"><span>格</span></div>
+    <div><input type="text"  ng-model="item.num"><span>号</span></div>
+</div>
+
+<ul class="list adding" style="width:100%">
+    <li class="item">
+        <!--<div class="title">手机：</div>-->
+      <input type="text"  placeholder="请输入手机号"  ng-change="mobileChange()" ng-model="item.mobile">
+      <div class="pos">{{item.selectFrame}} {{item.lattice}}格 {{item.num}}</div>
+    </li>
+
+</ul>
+<div class="list list-inset addHistory" >
+    <div class="item" ng-repeat="data in items">
+      <span class="num">{{$index+1}}</span>
+      <span class="mobilePhone">{{data.mobile}}</span>
+      <span class="address">{{data.selectFrame}} {{data.lattice}}格 {{data.num}}号</span>
+    </div>
+</div>
+<button class="button button-block button-assertive" ng-click="clearList()">清空列表</button>
+</ion-content>
+</ion-view>
+
