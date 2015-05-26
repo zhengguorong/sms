@@ -31,7 +31,7 @@ angular.module('starter.controllers', [])
 
       if (form.$valid) {
         Auth.createUser({
-          name: $scope.user.name||$scope.user.mobilePhone,
+          name: $scope.user.name || $scope.user.mobilePhone,
           mobilePhone: $scope.user.mobilePhone,
           email: $scope.user.email,
           password: $scope.user.password
@@ -62,7 +62,7 @@ angular.module('starter.controllers', [])
       num: "",
       mobile: ""
     }
-    $scope.frames = ["A", "B", "C", "D"];
+    $scope.frames = ["A", "B", "C", "D","E","F","G","H","I","j","K","L","M","N"];
 
     function addItem() {
     }
@@ -94,7 +94,18 @@ angular.module('starter.controllers', [])
     }
 
   })
-  .controller('MessageCtrl', function ($scope, $stateParams) {
+  .controller('MessageCtrl', function ($scope, $stateParams,Template) {
+    $scope.templates = [];
+    $scope.selectedTemplate={};
+    var getList = function () {
+      Template.getByUserId()
+        .then(function (data) {
+          $scope.templates = data;
+          $scope.selectedTemplate=data[0];
+        })
+        .catch();
+    }
+    getList();
 
   })
   .controller('SearchCtrl', function ($scope, $stateParams) {
@@ -103,17 +114,73 @@ angular.module('starter.controllers', [])
   .controller('ManagerCtrl', function ($scope) {
 
   })
-  .controller('TemplistCtrl', function ($scope) {
-    $scope.edit = function () {
-      window.location.href = "#/tab/tempedit/1";
+  .controller('TemplistCtrl', function ($scope, $http, Template) {
+    $scope.templates = [];
+    $scope.edit = function (template) {
+      window.location.href = "#/tab/tempedit/"+template._id;
     }
-    $scope.add=function(){
-      window.location.href="#/tab/tempadd";
+    $scope.delete = function (template) {
+      $http.delete("/api/templates/" + template._id).
+        success(function (data) {
+          getList();
+        })
     }
+    $scope.add = function () {
+      window.location.href = "#/tab/tempadd";
+    }
+    var getList = function () {
+      Template.getByUserId()
+        .then(function (data) {
+          $scope.templates = data;
+        })
+        .catch();
+    }
+    getList();
+  }
+)
+  .controller('TempeditCtrl', function ($scope,Template,$stateParams) {
+    $scope.template={};
+    var getTemplate=function(id){
+      Template.getById(id)
+        .then(function(data){
+          $scope.template=data;
+        })
+        .catch();
+    }
+    $scope.updateTempplate = function (form) {
+      $scope.submitted = true;
+      if (form.$valid) {
+        Template.updateTemplate($scope.template)
+          .then(function(data){
+            window.location.href="#/tab/templist";
+          })
+          .catch();
+      }
+    }
+    var id=$stateParams.id;
+    getTemplate(id);
   })
-  .controller('TempeditCtrl', function ($scope) {
-
-  })
-    .controller('TempaddCtrl', function ($scope) {
+  .controller('TempaddCtrl', function ($scope,Template) {
+    $scope.template = {
+      content: "快递编号#编号#",
+      isIncludeNum: true
+    };
+    $scope.updateChecked = function (value) {
+      if (!value) {
+        $scope.template.content = $scope.template.content.replace("快递编号#编号#", "");
+      } else {
+        $scope.template.content = "快递编号#编号#" + ($scope.template.content || "");
+      }
+    }
+    $scope.addTempplate = function (form) {
+      $scope.submitted = true;
+      if (form.$valid) {
+        Template.addTemplate($scope.template)
+          .then(function(data){
+            window.location.href="#/tab/templist";
+          })
+          .catch();
+      }
+    }
 
   });

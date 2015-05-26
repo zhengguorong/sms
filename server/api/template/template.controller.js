@@ -20,8 +20,17 @@ exports.show = function(req, res) {
   });
 };
 
+//Get list by userId
+exports.getByUserId=function(req,res){
+  Template.find({userId:req.user["_id"]},function(err,templates){
+    if(err) { return handleError(res, err); }
+    return res.json(200, templates);
+  })
+}
+
 // Creates a new template in the DB.
 exports.create = function(req, res) {
+  req.body.userId=req.user["_id"];
   Template.create(req.body, function(err, template) {
     if(err) { return handleError(res, err); }
     return res.json(201, template);

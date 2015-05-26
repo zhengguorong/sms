@@ -1,5 +1,28 @@
 <ion-view view-title="模板编辑">
 <ion-content>
+  <form ng-submit="updateTempplate(form)" novalidate name="form">
+    <div class="padding tempAdd">
+      <label class="item item-input">
+        <input type="text" name="templateId" placeholder="请输入模板编号" ng-model="template.templateId" required>
+      </label>
+      <ion-toggle ng-model="template.isIncludeNum" toggle-class="toggle-calm"
+                  ng-change="updateChecked(template.isIncludeNum)">内容是否包含编号
+      </ion-toggle>
+      <div class="title">模板内容(超过71个字符将按两条发送)：</div>
+      <label class="item item-input">
+        <textarea rows="5" style="line-height:25px;" required name="content" ng-model="template.content"></textarea>
+      </label>
 
+      <p class="help-block" ng-show="form.templateId.$error.required && submitted">
+        请输入模板编号
+      </p>
+
+      <p class="help-block"
+         ng-show="form.content.$error.required && submitted">
+        请输入发送模板内容
+      </p>
+      <button class="button button-block button-positive" type="submit">确定</button>
+    </div>
+  </form>
 </ion-content>
 </ion-view>

@@ -2,16 +2,13 @@
   <ion-content>
   <div class="list list-inset addHistory" >
   <label class="item item-input">
-    <textarea rows="5" style="line-height:25px;">【食品快递】你好！申通快递，你的快件请在12:00-20:00携带本人有效证件到学校正门自取！金吉列出国留学赞助。服务热线15602322737</textarea>
+    <textarea rows="5" style="line-height:25px;" readonly="readonly">{{selectedTemplate.content}}</textarea>
   </label>
   <label class="item item-input item-select">
     <div class="input-label">
       选择模板
     </div>
-    <select>
-      <option>Blue</option>
-      <option selected>Green</option>
-      <option>Red</option>
+    <select ng-options="template.templateId for template in templates" ng-model="selectedTemplate" required>
     </select>
   </label>
   <button class="button button-block button-positive">发送</button>

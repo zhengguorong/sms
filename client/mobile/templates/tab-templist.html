@@ -1,11 +1,11 @@
 <ion-view view-title="模板管理">
 <ion-content>
 	<ul class="list tempList">
-		<li class="item">
-			<div class="name">申通模板</div>
+		<li class="item" ng-repeat="template in templates">
+			<div class="name">{{template.templateId}}</div>
 			<div class="action">
-				<button class="button button-small button-positive" ng-click="edit()">修改</button>
-				<button class="button button-small button-assertive">删除</button>
+				<button class="button button-small button-positive" ng-click="edit(template)">修改</button>
+				<button class="button button-small button-assertive" ng-click="delete(template)">删除</button>
 			</div>
 		</li>
 	</ul>

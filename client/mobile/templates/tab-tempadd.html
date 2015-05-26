@@ -1,23 +1,28 @@
 <ion-view view-title="添加模板">
-<ion-content>
-<div class="padding tempAdd" >
-  <label class="item item-input">
-    <input type="text" placeholder="请输入模板编号">
-  </label>
-  <li class="item item-toggle">
-    内容是否包含编号
-    <label class="toggle toggle-positive">
-      <input type="checkbox" checked="">
-      <div class="track">
-        <div class="handle"></div>
+  <ion-content>
+    <form ng-submit="addTempplate(form)" novalidate name="form">
+      <div class="padding tempAdd">
+        <label class="item item-input">
+          <input type="text" name="templateId" placeholder="请输入模板编号" ng-model="template.templateId" required>
+        </label>
+        <ion-toggle ng-model="template.isIncludeNum" toggle-class="toggle-calm"
+                    ng-change="updateChecked(template.isIncludeNum)">内容是否包含编号
+        </ion-toggle>
+        <div class="title">模板内容(超过71个字符将按两条发送)：</div>
+        <label class="item item-input">
+          <textarea rows="5" style="line-height:25px;" required name="content" ng-model="template.content"></textarea>
+        </label>
+
+        <p class="help-block" ng-show="form.templateId.$error.required && submitted">
+          请输入模板编号
+        </p>
+
+        <p class="help-block"
+           ng-show="form.content.$error.required && submitted">
+          请输入发送模板内容
+        </p>
+        <button class="button button-block button-positive" type="submit">确定</button>
       </div>
-    </label>
-  </li>
-  <div class="title">模板内容(超过71个字符将按两条发送)：</div>
-  <label class="item item-input">
-    <textarea rows="5" style="line-height:25px;">快递编号#编号#</textarea>
-  </label>
-  <button class="button button-block button-positive">确定</button>
-</div>
-</ion-content>
+    </form>
+  </ion-content>
 </ion-view>
