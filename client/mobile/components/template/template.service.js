@@ -58,6 +58,20 @@ angular.module('starter')
             return cb();
           }.bind(this));
         return deferred.promise;
+      },
+      deleteById:function(templateId,callback){
+        var cb = callback || angular.noop;
+        var deferred = $q.defer();
+        $http.delete('/api/templates/'+templateId)
+          .success(function (data) {
+            deferred.resolve(data);
+            return cb();
+          })
+          .error(function(err){
+            deferred.resolve(data);
+            return cb();
+          }.bind(this));
+        return deferred.promise;
       }
     }
 })

@@ -54,7 +54,7 @@ angular.module('starter.controllers', [])
     };
 
   })
-  .controller('DashCtrl', function ($scope) {
+  .controller('DashCtrl', function ($scope,sendItem) {
     // 架号
     $scope.item = {
       selectFrame: "A",
@@ -64,8 +64,6 @@ angular.module('starter.controllers', [])
     }
     $scope.frames = ["A", "B", "C", "D","E","F","G","H","I","j","K","L","M","N"];
 
-    function addItem() {
-    }
 
     //添加的历史
     $scope.items = [];
@@ -75,18 +73,16 @@ angular.module('starter.controllers', [])
       item.lattice = $scope.item.lattice;
       item.num = $scope.item.num;
       item.mobile = $scope.item.mobile;
-      $scope.items.push(item);
+      sendItem.addItem(item);
+      $scope.items=sendItem.getItems();
       $scope.item.num = Number($scope.item.num) + 1
-      clearItem();
     }
 
-    function clearItem() {
-      $scope.item.mobile = ""
-    }
 
     $scope.mobileChange = function () {
       if ($scope.item.mobile.length == 11) {
         addItem();
+        $scope.item.mobile = ""
       }
     }
     $scope.clearList = function () {
@@ -94,20 +90,60 @@ angular.module('starter.controllers', [])
     }
 
   })
-  .controller('MessageCtrl', function ($scope, $stateParams,Template) {
+  .controller('MessageCtrl', function ($scope, $stateParams,Template,sendItem,$ionicPopup,$http) {
+
     $scope.templates = [];
     $scope.selectedTemplate={};
     var getList = function () {
       Template.getByUserId()
         .then(function (data) {
           $scope.templates = data;
-          $scope.selectedTemplate=data[0];
+          $scope.selectedTemplate=$scope.templates[0];
         })
         .catch();
+    }
+    $scope.selectAction=function(template){
+      $scope.selectedTemplate=template;
     }
     $scope.$on('$ionicView.beforeEnter', function() {
       getList();
     });
+    $scope.send=function(){
+       var items=sendItem.getItems();
+       if(items.length==0){
+         $ionicPopup.alert({
+           title: '提示!',
+           template: '还没添加发送手机号'
+         });
+       }else{
+          var reqItems=[];
+          for(var i=0;i<items.length;i++){
+            var reqItem=buildSendData(items[i],$scope.selectedTemplate);
+            reqItems.push(reqItem);
+          }
+         $http.post("/api/sends",reqItems)
+           .success(function(data){
+
+           })
+       }
+    }
+    //构造发送内容
+    var buildSendData=function(item,template){
+      var number;//货架号
+      var reqItem={};
+      if(item){
+        number=item.selectFrame+item.lattice+"格"+item.num+"号";
+        reqItem.mobilePhone=item.mobile;
+        if(template.isIncludeNum){
+          reqItem.content=template.content.replace("#编号#",number);
+        }else{
+          reqItem.content=template.content;
+        }
+
+      }
+      return reqItem;
+
+    }
 
   })
   .controller('SearchCtrl', function ($scope, $stateParams) {
@@ -122,8 +158,8 @@ angular.module('starter.controllers', [])
       $state.go("tab.tempedit",{id:template._id})
     }
     $scope.delete = function (template) {
-      $http.delete("/api/templates/" + template._id).
-        success(function (data) {
+      Template.deleteById(template._id)
+        .then(function(){
           getList();
         })
     }

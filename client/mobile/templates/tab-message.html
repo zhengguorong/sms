@@ -8,10 +8,11 @@
     <div class="input-label">
       选择模板
     </div>
-    <select ng-options="template.templateId for template in templates" ng-model="selectedTemplate" required>
+    <select  ng-options="template as template.templateId for template in templates" ng-model="selectedTemplate" ng-change="selectAction(selectedTemplate)">
     </select>
+
   </label>
-  <button class="button button-block button-positive">发送</button>
+  <button class="button button-block button-positive" ng-click="send()">发送</button>
   </div>
   </ion-content>
 </ion-view>

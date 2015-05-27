@@ -126,6 +126,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngResource', 'ngCook
               controller: 'TempaddCtrl'
             }
           }
+        })
+      .state('tab.aboutUs', {
+          url: '/aboutUs',
+          authenticate: true,
+          views: {
+            'tab-manager': {
+              templateUrl: 'templates/about.html'
+            }
+          }
         });
 
     // if none of the above states are matched, use this as the fallback
@@ -156,6 +165,17 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngResource', 'ngCook
         }
       }
     };
+  })
+  .factory('sendItem',function(){
+    var items=[];
+    return {
+      addItem:function(item){
+        items.push(item);
+      },
+      getItems:function(){
+        return items;
+      }
+    }
   })
 
 ;
