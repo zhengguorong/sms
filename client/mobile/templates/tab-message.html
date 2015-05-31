@@ -8,7 +8,7 @@
     <div class="input-label">
       选择模板
     </div>
-    <select  ng-options="template as template.templateId for template in templates" ng-model="selectedTemplate" ng-change="selectAction(selectedTemplate)">
+    <select style="padding-bottom: 12px"  ng-options="template as template.templateName for template in templates" ng-model="selectedTemplate" ng-change="selectAction(selectedTemplate)">
     </select>
 
   </label>

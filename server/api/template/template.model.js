@@ -6,8 +6,10 @@ var mongoose = require('mongoose'),
 var TemplateSchema = new Schema({
   userId:String,
   templateId: String,
+  templateName:String,
   isIncludeNum: Boolean,
-  content: String
+  content: String,
+  state:String
 });
 
 module.exports = mongoose.model('Template', TemplateSchema);

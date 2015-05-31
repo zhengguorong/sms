@@ -29,9 +29,9 @@
 
 </ul>
 <div class="list list-inset addHistory" >
-    <div class="item" ng-repeat="data in items">
+    <div class="item" ng-repeat="data in items" ng-click="deleteByIndex($index)">
       <span class="num">{{$index+1}}</span>
-      <span class="mobilePhone">{{data.mobile}}</span>
+      <span class="mobilePhone" >{{data.mobile}}</span>
       <span class="address">{{data.selectFrame}} {{data.lattice}}格 {{data.num}}号</span>
     </div>
 </div>

@@ -3,7 +3,7 @@
   <form ng-submit="updateTempplate(form)" novalidate name="form">
     <div class="padding tempAdd">
       <label class="item item-input">
-        <input type="text" name="templateId" placeholder="请输入模板编号" ng-model="template.templateId" required>
+        <input type="text" name="templateName" placeholder="请输入模板编号" ng-model="template.templateName" required>
       </label>
       <ion-toggle ng-model="template.isIncludeNum" toggle-class="toggle-calm"
                   ng-change="updateChecked(template.isIncludeNum)">内容是否包含编号
@@ -13,7 +13,7 @@
         <textarea rows="5" style="line-height:25px;" required name="content" ng-model="template.content"></textarea>
       </label>
 
-      <p class="help-block" ng-show="form.templateId.$error.required && submitted">
+      <p class="help-block" ng-show="form.templateName.$error.required && submitted">
         请输入模板编号
       </p>
 

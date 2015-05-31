@@ -79,6 +79,9 @@ angular.module('starter.controllers', [])
     }
 
 
+    $scope.deleteByIndex=function(index){
+      $scope.items.splice(index,1);
+    }
     $scope.mobileChange = function () {
       if ($scope.item.mobile.length == 11) {
         addItem();
@@ -86,7 +89,7 @@ angular.module('starter.controllers', [])
       }
     }
     $scope.clearList = function () {
-      $scope.items = [];
+      $scope.items.splice(0,$scope.items.length);
     }
 
   })
@@ -97,7 +100,13 @@ angular.module('starter.controllers', [])
     var getList = function () {
       Template.getByUserId()
         .then(function (data) {
-          $scope.templates = data;
+          var canUseTemplate=[];
+          for(var i=0;i<data.length;i++){
+            if(data[i].state=="SUCCESS"){
+              canUseTemplate.push(data[i]);
+            }
+          }
+          $scope.templates = canUseTemplate;
           $scope.selectedTemplate=$scope.templates[0];
         })
         .catch();
@@ -105,9 +114,10 @@ angular.module('starter.controllers', [])
     $scope.selectAction=function(template){
       $scope.selectedTemplate=template;
     }
-    $scope.$on('$ionicView.beforeEnter', function() {
-      getList();
-    });
+    getList();
+    //$scope.$on('$ionicView.beforeEnter', function() {
+    //  getList();
+    //});
     $scope.send=function(){
        var items=sendItem.getItems();
        if(items.length==0){
@@ -169,6 +179,16 @@ angular.module('starter.controllers', [])
     var getList = function () {
       Template.getByUserId()
         .then(function (data) {
+          data.forEach(function(template,index){
+            var state=template.state;
+            if(state=="CHECKING"){
+              template.state="审核中";
+            }else if(state=="SUCCESS"){
+              template.state="审核通过";
+            }else if(state=="FAIL"){
+              template.state="审核不通过";
+            }
+          })
           $scope.templates = data;
         })
         .catch();

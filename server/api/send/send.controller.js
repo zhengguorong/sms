@@ -2,6 +2,7 @@
 
 var _ = require('lodash');
 var Send = require('./send.model');
+var SendService=require('../../sms/message/send.service');
 
 // Get list of sends
 exports.index = function(req, res) {
@@ -22,10 +23,25 @@ exports.show = function(req, res) {
 
 // Creates a new send in the DB.
 exports.create = function(req, res) {
-  Send.create(req.body, function(err, send) {
-    if(err) { return handleError(res, err); }
-    return res.json(201, send);
-  });
+  for(var i=0;i<req.body.length;i++){
+    var ele=req.body[i];
+    ele.userId=req.user["_id"];
+    SendService.sendMessage(ele.content,ele.mobilePhone,function(err,data){
+      if(!err){
+        var jData=JSON.parse(data);
+        if(jData.code=="0"){
+          ele.code=jData.code;
+          ele.msg=jData.msg;
+          ele.result=jData.result;
+          Send.create(ele, function(err, send) {
+            if(err) { return handleError(res, err); }
+          });
+        }
+      }
+    })
+  }
+  res.jsonp({state:"ok",msg:"提交成功"})
+
 };
 
 // Updates an existing send in the DB.

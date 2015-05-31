@@ -2,7 +2,8 @@
 <ion-content>
 	<ul class="list tempList">
 		<li class="item" ng-repeat="template in templates">
-			<div class="name">{{template.templateId}}</div>
+			<div class="name">{{template.templateName}}</div>
+			<div class="state">({{template.state}})</div>
 			<div class="action">
 				<button class="button button-small button-positive" ng-click="edit(template)">修改</button>
 				<button class="button button-small button-assertive" ng-click="delete(template)">删除</button>
@@ -13,7 +14,6 @@
     <button class="button button-block button-positive" ng-click="add()">
       添加模板
     </button>
-
   </div>
 
 </ion-content>

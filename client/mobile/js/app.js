@@ -174,6 +174,12 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngResource', 'ngCook
       },
       getItems:function(){
         return items;
+      },
+      deleteItemByIndex:function(index){
+        items.splice(index,1);
+      },
+      clearItems:function(){
+        items=[];
       }
     }
   })

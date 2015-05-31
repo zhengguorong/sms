@@ -63,6 +63,11 @@
 	float: left;
 	line-height: 35px;
 }
+.tempList .state{
+  float: left;
+  line-height: 35px;
+  color: red;
+}
 .tempList .action{
 	float: right;
 }

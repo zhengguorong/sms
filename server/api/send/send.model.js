@@ -8,9 +8,13 @@ var SendSchema = new Schema({
   templateId: String,//发送模板编号
   content: String,//发送内容
   mobilePhone:String,//发送手机
-  number:String,//货架编号
   code:String,//发送状态
   msg:String,//发送状态说明
+  result:{
+    count:Number,
+    fee:Number,
+    sid:String
+  },
   updated: { type: Date, default: Date.now }//发送时间
 });
 
