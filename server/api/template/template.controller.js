@@ -25,7 +25,9 @@ exports.show = function(req, res) {
 exports.getByUserId=function(req,res){
   Template.find({userId:req.user["_id"]},function(err,templates){
     for(var i=0;i<templates.length;i++){
-      updateTemplateState(templates[i])
+      if(templates[i].state=="CHECKING"){
+        updateTemplateState(templates[i])
+      }
     }
     if(err) { return handleError(res, err); }
     return res.json(200, templates);
@@ -48,7 +50,7 @@ var updateTemplateState=function(template){
 // Creates a new template in the DB.
 exports.create = function(req, res) {
   req.body.userId=req.user["_id"];
-  TemplateService.createTemplate("【快递到了】"+req.body.content.replace("#编号#","#number#"),function(err,data){
+  TemplateService.createTemplate(req.body.content.replace("#编号#","#number#"),function(err,data){
     if(!err){
       var jData=JSON.parse(data);
       if(jData.code=="0"){
@@ -74,10 +76,26 @@ exports.update = function(req, res) {
     if (err) { return handleError(res, err); }
     if(!template) { return res.send(404); }
     var updated = _.merge(template, req.body);
-    updated.save(function (err) {
-      if (err) { return handleError(res, err); }
-      return res.json(200, template);
-    });
+    TemplateService.updateTemplate(updated,function(err,data){
+      if(!err){
+        console.log(data);
+        var jData=JSON.parse(data);
+        if(jData.code==0){
+          updated.state=jData.template["check_status"];
+          updated.save(function (err) {
+            if (err) { return handleError(res, err); }
+            return res.json(200, template);
+          });
+        }else{
+          res.jsonp({state:"err",msg:"修改失败"})
+        }
+
+      }else{
+        return handleError(res,err);
+      }
+
+    })
+
   });
 };
 
@@ -86,10 +104,24 @@ exports.destroy = function(req, res) {
   Template.findById(req.params.id, function (err, template) {
     if(err) { return handleError(res, err); }
     if(!template) { return res.send(404); }
-    template.remove(function(err) {
-      if(err) { return handleError(res, err); }
-      return res.send(204);
-    });
+    TemplateService.deleteTemplate(template.templateId,function(err,data){
+      if(!err){
+        var jData=JSON.parse(data);
+        if(jData.code==0){
+          template.remove(function(err) {
+            if(err) { return handleError(res, err); }
+            return res.send(204);
+          });
+        }else{
+          res.jsonp({state:"err",msg:"删除失败"})
+        }
+
+      }else{
+        return handleError(res,err);
+      }
+
+    })
+
   });
 };
 

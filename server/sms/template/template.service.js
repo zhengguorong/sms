@@ -9,22 +9,57 @@ var http=require("http"),
 var SMSHOST="yunpian.com";
 var APIKEY="667f769df383af6bb9efe934fa2e84e6";
 var TPL_ADD="/v1/tpl/add.json";
-var TPL_GET="/v1/tpl/get.json ";
+var TPL_GET="/v1/tpl/get.json";
+var TPL_DELETE="/v1/tpl/del.json";
+var TPL_UPDATE="/v1/tpl/update.json";
+var SECHEM="【快递到了】";
 
-
+/**
+ * 创建模板
+ * @param template
+ * @param callback
+ */
 function createTemplate(template,callback){
   var params={};
   params.apikey=APIKEY;
-  params.tpl_content=template;
+  params.tpl_content=SECHEM+template;
   params.notify_type=0;
   createRequest(params,TPL_ADD,callback)
 }
+/**
+ * 通过模板id获取模板
+ * @param templateId
+ * @param callback
+ */
 function getTemplateById(templateId,callback){
   var params={};
   params.apikey=APIKEY;
   params.tpl_id=templateId;
   createRequest(params,TPL_GET,callback);
 
+}
+/**
+ * 删除模板
+ * @param templateId
+ * @param callback
+ */
+function deleteTemplate(templateId,callback){
+  var params={};
+  params.apikey=APIKEY;
+  params.tpl_id=templateId;
+  createRequest(params,TPL_DELETE,callback);
+}
+/**
+ * 修改模板
+ * @param template
+ * @param callback
+ */
+function updateTemplate(template,callback){
+  var params={};
+  params.apikey=APIKEY;
+  params.tpl_id=template.templateId;
+  params.tpl_content=SECHEM+template.content;
+  createRequest(params,TPL_UPDATE,callback);
 }
 /**
  * 创建post请求
@@ -55,3 +90,5 @@ function createRequest(params,path,callback){
 }
 exports.createTemplate=createTemplate;
 exports.getTemplateById=getTemplateById;
+exports.deleteTemplate=deleteTemplate;
+exports.updateTemplate=updateTemplate;

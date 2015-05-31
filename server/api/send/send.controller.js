@@ -11,7 +11,12 @@ exports.index = function(req, res) {
     return res.json(200, sends);
   });
 };
-
+exports.getByUserId=function(req,res){
+  Send.find({userId:req.user["_id"]},function(err,sends){
+    if(err) { return handleError(res, err); }
+    return res.json(200, sends);
+  })
+}
 // Get a single send
 exports.show = function(req, res) {
   Send.findById(req.params.id, function (err, send) {
@@ -26,7 +31,7 @@ exports.create = function(req, res) {
   for(var i=0;i<req.body.length;i++){
     var ele=req.body[i];
     ele.userId=req.user["_id"];
-    SendService.sendMessage(ele.content,ele.mobilePhone,function(err,data){
+    SendService.sendMessage("【快递到了】"+ele.content,ele.mobilePhone,function(err,data){
       if(!err){
         var jData=JSON.parse(data);
         if(jData.code=="0"){

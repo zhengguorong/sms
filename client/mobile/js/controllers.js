@@ -133,7 +133,12 @@ angular.module('starter.controllers', [])
           }
          $http.post("/api/sends",reqItems)
            .success(function(data){
-
+             if(data.state=="ok"){
+               $ionicPopup.alert({
+                 title: '提示!',
+                 template: '发送成功!'
+               });
+             }
            })
        }
     }
@@ -156,11 +161,19 @@ angular.module('starter.controllers', [])
     }
 
   })
-  .controller('SearchCtrl', function ($scope, $stateParams) {
+  .controller('SearchCtrl', function ($scope, $stateParams,$http) {
+    $scope.items=[];
+    function getList(){
+      $http.get("/api/sends")
+        .success(function(data){
+          $scope.items=data;
+        })
+    }
+    getList();
 
   })
-  .controller('ManagerCtrl', function ($scope) {
-
+  .controller('ManagerCtrl', function ($scope,Template) {
+      Template.getByUserId();
   })
   .controller('TemplistCtrl', function ($scope, $http, Template,$state) {
     $scope.templates = [];
