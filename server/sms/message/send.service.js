@@ -6,7 +6,7 @@ var http=require("http"),
     querystring = require('querystring');
 
 
-var SMSHOST="yunpian.com";
+var SMSHOST="121.41.167.43";
 var APIKEY="667f769df383af6bb9efe934fa2e84e6";
 //通用发送接口的http地址
 var URI_SEND_SMS = "/v1/sms/send.json";
