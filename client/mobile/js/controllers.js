@@ -169,7 +169,9 @@ angular.module('starter.controllers', [])
           $scope.items=data;
         })
     }
-    getList();
+      $scope.$on('$ionicView.beforeEnter', function() {
+        getList();
+      });
 
   })
   .controller('ManagerCtrl', function ($scope,Template) {
