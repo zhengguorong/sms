@@ -57,12 +57,12 @@ angular.module('starter.controllers', [])
   .controller('DashCtrl', function ($scope,sendItem) {
     // 架号
     $scope.item = {
-      selectFrame: "A",
+      selectFrame: "",
       lattice: "",
       num: "",
       mobile: ""
     }
-    $scope.frames = ["A", "B", "C", "D","E","F","G","H","I","j","K","L","M","N"];
+    $scope.frames = ["","A", "B", "C", "D","E","F","G","H","I","j","K","L","M","N"];
 
 
     //添加的历史
@@ -75,7 +75,9 @@ angular.module('starter.controllers', [])
       item.mobile = $scope.item.mobile;
       sendItem.addItem(item);
       $scope.items=sendItem.getItems();
-      $scope.item.num = Number($scope.item.num) + 1
+      if($scope.item.num){
+         $scope.item.num = Number($scope.item.num) + 1
+      }
     }
 
 
@@ -147,7 +149,7 @@ angular.module('starter.controllers', [])
       var number;//货架号
       var reqItem={};
       if(item){
-        number=item.selectFrame+item.lattice+"格"+item.num+"号";
+        number=item.selectFrame+(item.lattice?"格":"")+(item.num?"号":"");
         reqItem.mobilePhone=item.mobile;
         if(template.isIncludeNum){
           reqItem.content=template.content.replace("#编号#",number);
@@ -242,7 +244,7 @@ angular.module('starter.controllers', [])
     var id=$stateParams.id;
     getTemplate(id);
   })
-  .controller('TempaddCtrl', function ($scope,Template,$state) {
+  .controller('TempaddCtrl', function ($scope,Template,$state,$ionicLoading,$ionicPopup) {
     $scope.template = {
       content: "快递编号#编号#",
       isIncludeNum: true
@@ -257,9 +259,22 @@ angular.module('starter.controllers', [])
     $scope.addTempplate = function (form) {
       $scope.submitted = true;
       if (form.$valid) {
+        $ionicLoading.show({
+          template: '添加中...',
+          duration:5000
+        });
         Template.addTemplate($scope.template)
           .then(function(data){
-            $state.go("tab.templist");
+            $ionicLoading.hide();
+            if(data.code&&data.code!=0){
+             $ionicPopup.alert({
+                title: '错误',
+                template: data.detail
+              });
+            }else{
+              $state.go("tab.templist");
+            }
+
           })
           .catch();
       }

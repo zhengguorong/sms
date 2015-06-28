@@ -5,18 +5,10 @@
     <!--<div><input type="text" ng-model="item.lattice"><span>格</span></div>-->
     <!--<div><input type="text"  ng-model="item.num"><span>号</span></div>-->
 <!--</div>-->
-  <div>
-    <div>
-      <div class="range range-positive">
-        <select style="width: 100%" ng-options="frame  for frame in frames" ng-model="item.selectFrame"></select>
-      </div>
-      <div class="range range-positive">
-      <input type="range" name="volume" min="0" max="30" value="0" style="float:left;"  ng-model="item.lattice">{{item.lattice}}格
-      </div>
-      <div class="range range-positive">
-      <input type="range" name="volume" min="0" max="100" value="0" style="float:left;" ng-model="item.num">{{item.num}}号
-      </div>
-    </div>
+  <div class="address">
+    <div><select ng-options="frame  for frame in frames" ng-model="item.selectFrame"></select></div>
+    <div><input type="text" ng-model="item.lattice"><span>格</span></div>
+    <div><input type="text"  ng-model="item.num"><span>号</span></div>
   </div>
 
 <ul class="list adding" style="width:100%">
@@ -24,7 +16,7 @@
     <li class="item">
         <!--<div class="title">手机：</div>-->
       <input type="tel"  placeholder="请输入手机号"  ng-change="mobileChange()" ng-model="item.mobile">
-      <div class="pos">{{item.selectFrame}} {{item.lattice}}格 {{item.num}}</div>
+      <div class="pos">{{item.selectFrame}} {{item.lattice?item.lattice+'格':item.lattice}} {{item.num?item.num+'号':item.num}}</div>
     </li>
 
 </ul>
@@ -32,10 +24,10 @@
     <div class="item" ng-repeat="data in items" ng-click="deleteByIndex($index)">
       <span class="num">{{$index+1}}</span>
       <span class="mobilePhone" >{{data.mobile}}</span>
-      <span class="address">{{data.selectFrame}} {{data.lattice}}格 {{data.num}}号</span>
+      <span class="address">{{data.selectFrame}} {{data.lattice?data.lattice+'格':data.lattice}} {{data.num?data.num+'号':data.num}}</span>
     </div>
 </div>
-<button class="button button-block button-assertive" ng-click="clearList()">清空列表</button>
+<button style="margin-top: 50px;float:right;" class="button button-block  button-assertive" ng-click="clearList()">清空列表</button>
 </ion-content>
 </ion-view>
 
