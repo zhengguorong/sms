@@ -60,6 +60,8 @@ exports.create = function(req, res) {
           if(err) { return handleError(res, err); }
           return res.json(201, template);
         });
+      }else{
+        return res.json(201, jData);
       }
     }else{
       res.jsonp({state:"err",msg:"网络异常"})
@@ -78,7 +80,6 @@ exports.update = function(req, res) {
     var updated = _.merge(template, req.body);
     TemplateService.updateTemplate(updated,function(err,data){
       if(!err){
-        console.log(data);
         var jData=JSON.parse(data);
         if(jData.code==0){
           updated.state=jData.template["check_status"];
